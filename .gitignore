@@ -1,0 +1,12 @@
+# Node backend
+backend/node_modules
+backend/dist
+backend/.env
+
+# Angular frontend
+frontend/node_modules
+frontend/dist
+
+# General
+.DS_Store
+
