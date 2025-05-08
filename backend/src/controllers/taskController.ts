@@ -1,9 +1,14 @@
 import { Request, Response } from 'express';
 import { Task } from '../models/taskModel';
 
-export const createTask = async (req: Request, res: Response): Promise<void> => {
+interface AuthRequest extends Request {
+  userId?: string;
+}
+
+export const createTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { headline, priority, description, userId } = req.body;
+    const { headline, priority, description } = req.body;
+    const userId = req.userId;
 
     if (!headline || !priority || !userId) {
       res.status(400).json({ error: 'Missing required fields' });
@@ -17,9 +22,9 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getTasks = async (req: Request, res: Response): Promise<void> => {
+export const getTasks = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { userId } = req.query;
+    const userId = req.userId;
 
     if (!userId) {
       res.status(400).json({ error: 'Missing userId' });
@@ -33,31 +38,37 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const updateTask = async (req: Request, res: Response): Promise<void> => {
+export const updateTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const userId = req.userId;
 
-    const updated = await Task.findByIdAndUpdate(id, updates, { new: true });
+    const task = await Task.findOneAndUpdate(
+      { _id: id, userId },
+      req.body,
+      { new: true }
+    );
 
-    if (!updated) {
-      res.status(404).json({ error: 'Task not found' });
+    if (!task) {
+      res.status(404).json({ error: 'Task not found or not yours' });
       return;
     }
 
-    res.json(updated);
+    res.json(task);
   } catch (err) {
     res.status(500).json({ error: 'Failed to update task', details: err });
   }
 };
 
-export const deleteTask = async (req: Request, res: Response): Promise<void> => {
+export const deleteTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const deleted = await Task.findByIdAndDelete(id);
+    const userId = req.userId;
 
-    if (!deleted) {
-      res.status(404).json({ error: 'Task not found' });
+    const task = await Task.findOneAndDelete({ _id: id, userId });
+
+    if (!task) {
+      res.status(404).json({ error: 'Task not found or not yours' });
       return;
     }
 

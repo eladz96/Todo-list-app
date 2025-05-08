@@ -5,8 +5,11 @@ import {
   updateTask,
   deleteTask
 } from '../controllers/taskController';
+import { verifyToken } from '../middlewares/authMiddleware';
 
 const router = Router();
+
+router.use(verifyToken);
 
 router.post('/', createTask);
 router.get('/', getTasks);
