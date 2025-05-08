@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import authRoutes from './routes/authRoutes';
+import taskRoutes from './routes/taskRoutes';
 
 dotenv.config();
 
@@ -8,15 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/todo-app';
 
-// Middleware to parse JSON
 app.use(express.json());
+app.use('/users', authRoutes);
+app.use('/tasks', taskRoutes);
 
-// Health check route
-app.get('/', (req, res) => {
-  res.send('ToDo API is running');
-});
-
-// Connect to MongoDB and start server
 mongoose.connect(MONGO_URL)
   .then(() => {
     console.log('✅ Connected to MongoDB');
