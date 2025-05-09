@@ -24,4 +24,6 @@
   </p>
 </form>
 
+<app-signup *ngIf="showSignup" (close)="showSignup = false"></app-signup>
+
 <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>

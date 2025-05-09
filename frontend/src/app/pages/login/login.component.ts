@@ -3,18 +3,21 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SignupComponent } from '../../components/signup/signup.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SignupComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
+  showSignup = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -34,8 +37,7 @@ export class LoginComponent {
   }
 
   goToSignup() {
-    console.log('Sign-up clicked');
-    // Later: open popup or navigate to signup page
+    this.showSignup = true;
   }
 
 }
