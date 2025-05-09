@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/authRoutes';
 import taskRoutes from './routes/taskRoutes';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/todo-app';
 
+app.use(cors());
 app.use(express.json());
 app.use('/users', authRoutes);
 app.use('/tasks', taskRoutes);
