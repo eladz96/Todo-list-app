@@ -18,6 +18,8 @@ export class SignupComponent {
   password = '';
   message = '';
 
+  showSuccessPopup = false;
+
   @Output() close = new EventEmitter<void>();
 
   constructor(private http: HttpClient) {}
@@ -30,7 +32,8 @@ export class SignupComponent {
       password: this.password
     }).subscribe({
       next: () => {
-        this.message = 'User registered successfully!';
+        this.message = '';
+        this.showSuccessPopup = true;
       },
       error: (err) => {
         this.message = err.error?.error || 'Registration failed';
@@ -40,5 +43,10 @@ export class SignupComponent {
 
   closePopup(event: MouseEvent) {
     this.close.emit();
+  }
+
+  closeSuccessPopup() {
+    this.showSuccessPopup = false;
+    this.close.emit(); 
   }
 }
