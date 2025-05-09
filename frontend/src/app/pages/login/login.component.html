@@ -17,6 +17,11 @@
     required
   />
   <button type="submit">Login</button>
+  
+  <p class="signup-link">
+    Don't have an account?
+    <a (click)="goToSignup()">Sign up</a>
+  </p>
 </form>
 
-<p *ngIf="errorMessage" style="color:red">{{ errorMessage }}</p>
+<p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>

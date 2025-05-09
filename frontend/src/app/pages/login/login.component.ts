@@ -32,4 +32,10 @@ export class LoginComponent {
       }
     });
   }
+
+  goToSignup() {
+    console.log('Sign-up clicked');
+    // Later: open popup or navigate to signup page
+  }
+
 }
