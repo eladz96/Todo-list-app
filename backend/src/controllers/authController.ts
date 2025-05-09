@@ -35,15 +35,20 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      res.status(400).json({ error: 'Please enter both email and password' });
+      return;
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'User not found' });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'One or more fields are incorrect' });
       return;
     }
 
