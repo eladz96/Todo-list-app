@@ -11,10 +11,13 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
   tasks: any[] = [];
+  userName: string = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.userName = localStorage.getItem('userName') || '';
+
     const token = localStorage.getItem('token');
     if (!token) return;
 
@@ -26,5 +29,10 @@ export class HomeComponent implements OnInit {
       next: (res) => this.tasks = res,
       error: (err) => console.error('Failed to load tasks', err)
     });
+  }
+
+  openTaskPopup() {
+    console.log('Add Task clicked');
+    // TODO: trigger popup later
   }
 }
