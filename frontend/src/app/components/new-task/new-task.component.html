@@ -1,0 +1,17 @@
+<div class="new-task-backdrop" (click)="close()">
+    <div class="new-task-modal" (click)="$event.stopPropagation()">
+      <h3>New Task</h3>
+      <form (ngSubmit)="submitTask()" #taskForm="ngForm">
+        <input type="text" [(ngModel)]="headline" name="headline" placeholder="Headline" required />
+        <select [(ngModel)]="priority" name="priority" required>
+          <option value="" disabled selected>Select priority</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <textarea [(ngModel)]="description" name="description" placeholder="Description"></textarea>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  </div>
+  
