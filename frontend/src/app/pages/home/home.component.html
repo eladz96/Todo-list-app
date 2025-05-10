@@ -1,5 +1,11 @@
 <div class="home">
-    <h1>Welcome!</h1>
-    <p>Here you will manage your tasks.</p>
+  <h1>Your Tasks</h1>
+
+  <div class="task-list">
+    <div class="task-card" *ngFor="let task of tasks">
+      <h3>{{ task.headline }}</h3>
+      <p><strong>Priority:</strong> {{ task.priority }}</p>
+      <p>{{ task.description }}</p>
+    </div>
   </div>
-  
+</div>
