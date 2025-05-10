@@ -11,6 +11,13 @@
   (taskCreated)="refreshTasks()">
 </app-new-task>
 
+<app-edit-task
+  *ngIf="showEditPopup"
+  [task]="editTaskData"
+  (updated)="refreshTasks()"
+  (closed)="closeEditPopup()">
+</app-edit-task>
+
 <div class="task-section" *ngFor="let priority of displayOrder">
   <div *ngIf="tasksByPriority[priority].length > 0">
     <h2 class="priority-header">{{ priority | titlecase }} Priority</h2>

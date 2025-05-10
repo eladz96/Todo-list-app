@@ -1,0 +1,18 @@
+<div class="edit-task-backdrop" (click)="cancel()">
+  <div class="edit-task-modal" (click)="$event.stopPropagation()">
+    <h3>Edit Task</h3>
+    <form (ngSubmit)="save()" #editForm="ngForm">
+      <input type="text" [(ngModel)]="headline" name="headline" required />
+      <select [(ngModel)]="priority" name="priority" required>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <textarea [(ngModel)]="description" name="description" placeholder="Description"></textarea>
+      <div class="edit-buttons">
+        <button type="submit">Save</button>
+        <button type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from '../../components/new-task/new-task.component';
-import { HostListener } from '@angular/core';
+import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
 
 type TaskPriority = 'high' | 'medium' | 'low';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NewTaskComponent],
+  imports: [CommonModule, NewTaskComponent, EditTaskComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-
 export class HomeComponent implements OnInit {
   tasksByPriority: Record<TaskPriority, any[]> = {
     high: [],
@@ -24,6 +23,8 @@ export class HomeComponent implements OnInit {
   displayOrder: TaskPriority[] = [];
   userName: string = '';
   showNewTask = false;
+  showEditPopup = false;
+  editTaskData: any = null;
 
   constructor(private http: HttpClient) {}
 
@@ -45,7 +46,7 @@ export class HomeComponent implements OnInit {
         tasks.forEach(task => {
           const raw = task.priority?.toLowerCase();
           const validPriorities: TaskPriority[] = ['high', 'medium', 'low'];
-        
+
           if (raw && validPriorities.includes(raw as TaskPriority)) {
             const priority = raw as TaskPriority;
             this.tasksByPriority[priority].push({ ...task, showMenu: false });
@@ -81,39 +82,41 @@ export class HomeComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: MouseEvent): void {
-  const target = event.target as HTMLElement;
-  const clickedInsideMenu = target.closest('.task-menu-wrapper');
-  if (!clickedInsideMenu) {
-    Object.values(this.tasksByPriority).flat().forEach(t => t.showMenu = false);
+    const target = event.target as HTMLElement;
+    const clickedInsideMenu = target.closest('.task-menu-wrapper');
+    if (!clickedInsideMenu) {
+      Object.values(this.tasksByPriority).flat().forEach(t => t.showMenu = false);
+    }
   }
-}
 
   editTask(task: any): void {
+    this.editTaskData = task;
+    this.showEditPopup = true;
     task.showMenu = false;
-    console.log('Edit:', task);
-    // TODO: open edit popup
+  }
+
+  closeEditPopup(): void {
+    this.showEditPopup = false;
+    this.editTaskData = null;
   }
 
   deleteTask(task: any): void {
     task.showMenu = false;
-  
+
     const confirmed = confirm(`Are you sure you want to delete "${task.headline}"?`);
     if (!confirmed) return;
-  
+
     const token = localStorage.getItem('token');
     if (!token) return;
-  
+
     this.http.delete(`http://localhost:3000/tasks/${task._id}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
-      next: () => {
-        this.refreshTasks();
-      },
+      next: () => this.refreshTasks(),
       error: (err) => {
         console.error('Failed to delete task:', err);
         alert('Something went wrong. Could not delete task.');
       }
     });
   }
-  
 }
