@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from '../../components/new-task/new-task.component';
 import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
+import { Router } from '@angular/router';
 
 type TaskPriority = 'high' | 'medium' | 'low';
 
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
   showEditPopup = false;
   editTaskData: any = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.userName = localStorage.getItem('userName') || '';
@@ -118,5 +119,11 @@ export class HomeComponent implements OnInit {
         alert('Something went wrong. Could not delete task.');
       }
     });
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    this.router.navigate(['/']);
   }
 }
