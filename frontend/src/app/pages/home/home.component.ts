@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from '../../components/new-task/new-task.component';
+import { HostListener } from '@angular/core';
 
 type TaskPriority = 'high' | 'medium' | 'low';
 
@@ -42,9 +43,14 @@ export class HomeComponent implements OnInit {
         this.tasksByPriority = { high: [], medium: [], low: [] };
 
         tasks.forEach(task => {
-          const priority = task.priority.toLowerCase() as TaskPriority;
-          if (this.tasksByPriority[priority]) {
-            this.tasksByPriority[priority].push(task);
+          const raw = task.priority?.toLowerCase();
+          const validPriorities: TaskPriority[] = ['high', 'medium', 'low'];
+        
+          if (raw && validPriorities.includes(raw as TaskPriority)) {
+            const priority = raw as TaskPriority;
+            this.tasksByPriority[priority].push({ ...task, showMenu: false });
+          } else {
+            console.warn('❌ Skipped task with invalid priority:', task.priority, task);
           }
         });
 
@@ -67,4 +73,47 @@ export class HomeComponent implements OnInit {
   refreshTasks(): void {
     this.loadTasks();
   }
+
+  toggleMenu(task: any): void {
+    Object.values(this.tasksByPriority).flat().forEach(t => t.showMenu = false);
+    task.showMenu = !task.showMenu;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+  const clickedInsideMenu = target.closest('.task-menu-wrapper');
+  if (!clickedInsideMenu) {
+    Object.values(this.tasksByPriority).flat().forEach(t => t.showMenu = false);
+  }
+}
+
+  editTask(task: any): void {
+    task.showMenu = false;
+    console.log('Edit:', task);
+    // TODO: open edit popup
+  }
+
+  deleteTask(task: any): void {
+    task.showMenu = false;
+  
+    const confirmed = confirm(`Are you sure you want to delete "${task.headline}"?`);
+    if (!confirmed) return;
+  
+    const token = localStorage.getItem('token');
+    if (!token) return;
+  
+    this.http.delete(`http://localhost:3000/tasks/${task._id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        this.refreshTasks();
+      },
+      error: (err) => {
+        console.error('Failed to delete task:', err);
+        alert('Something went wrong. Could not delete task.');
+      }
+    });
+  }
+  
 }

@@ -16,6 +16,13 @@
     <h2 class="priority-header">{{ priority | titlecase }} Priority</h2>
     <div class="task-list">
       <div class="task-card" *ngFor="let task of tasksByPriority[priority]">
+        <div class="task-menu-wrapper">
+          <button class="menu-btn" (click)="toggleMenu(task)">⋮</button>
+          <div class="task-menu" *ngIf="task.showMenu">
+            <button (click)="editTask(task)">Edit</button>
+            <button (click)="deleteTask(task)">Delete</button>
+          </div>
+        </div>
         <h3>{{ task.headline }}</h3>
         <p><strong>Priority:</strong> {{ task.priority }}</p>
         <p>{{ task.description }}</p>

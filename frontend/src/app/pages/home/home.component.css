@@ -69,7 +69,7 @@
 
 .task-card h3 {
   font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
 
 .priority-header {
@@ -83,4 +83,44 @@
 
 .task-section:last-child {
   padding-bottom: 4rem;
+}
+
+.task-menu-wrapper {
+  position: relative;
+  text-align: right;
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+  padding: 0;
+}
+
+.task-menu {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.task-menu button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.task-menu button:hover {
+  background-color: #f0f0f0;
 }
