@@ -2,48 +2,46 @@
     width: 100%;
     background-color: #3b82f6;
     color: white;
-    font-size: 45px;
+    font-size: 3.5rem;
     font-weight: bold;
-    padding: 16px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
   
     display: flex;
-    justify-content: flex-start;  
+    justify-content: flex-start;
     align-items: center;
-    padding-left: 24px;       
-} 
-
+}
+  
 form {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
-    margin-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    gap: 12px;
-    padding: 20px;
+    width: 90%;
+    max-width: 25rem;
+    margin: 15rem auto 0; 
+    gap: 0.75rem;
+    padding: 2rem;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     background: #f9f9f9;
 }
   
 input {
-    padding: 8px;
-    font-size: 16px;
+    padding: 0.5rem;
+    font-size: 1rem;
 }
   
 button {
-    padding: 10px;
+    padding: 0.625rem;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
 }
   
 button:hover {
@@ -52,18 +50,19 @@ button:hover {
   
 h2 {
     text-align: center;
+    font-size: 1.75rem;
 }
   
 p {
     text-align: center;
     color: black;
     font-weight: bold;
+    font-size: 1rem;
 }
-
+  
 .signup-link {
     text-align: center;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 0.25rem 0;
 }
   
 .signup-link a {
@@ -71,16 +70,16 @@ p {
     cursor: pointer;
     text-decoration: underline;
 }
-  
+ 
 .signup-link a:hover {
     color: #0056b3;
 }
-
+  
 .error-message {
     color: red;
     text-align: center;
     font-weight: bold;
-    margin-top: 8px;
+    margin-top: 0.5rem;
+    font-size: 1rem;
 }
-  
   
